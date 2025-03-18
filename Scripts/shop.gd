@@ -21,20 +21,20 @@ var rand3
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	randomize()
-	_randomize_shop()
+	_randomize_shop(1)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	_open_shop()
 
-func _randomize_shop() -> void:
+func _randomize_shop(cost_multi: float) -> void:
 	rand1 = randi_range(0, upgrades.size() - 1)
-	up1.text = str(upgrades.keys()[rand1]) + "\n" + "Price:" + str(upgrades.values()[rand1]) + " trash\n" + upgrade_stats.keys()[rand1]
+	up1.text = str(upgrades.keys()[rand1]) + "\n" + "Price:" + str(upgrades.values()[rand1] * cost_multi) + " trash\n" + upgrade_stats.keys()[rand1]
 	rand2 = randi_range(0, upgrades.size() - 1)
-	up2.text = str(upgrades.keys()[rand2]) + "\n" + "Price:" + str(upgrades.values()[rand2]) + " trash\n" + upgrade_stats.keys()[rand2]
+	up2.text = str(upgrades.keys()[rand2]) + "\n" + "Price:" + str(upgrades.values()[rand2] * cost_multi) + " trash\n" + upgrade_stats.keys()[rand2]
 	rand3 = randi_range(0, upgrades.size() - 1)
-	up3.text = str(upgrades.keys()[rand3]) + "\n" + "Price:" + str(upgrades.values()[rand3]) + " trash\n" + upgrade_stats.keys()[rand3]
+	up3.text = str(upgrades.keys()[rand3]) + "\n" + "Price:" + str(upgrades.values()[rand3] * cost_multi) + " trash\n" + upgrade_stats.keys()[rand3]
 	
 
 func _open_shop() -> void:

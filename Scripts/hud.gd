@@ -25,6 +25,8 @@ var frt = 100
 @onready var frt_multi = $Multipliers/VBoxContainer/Bountiful
 @onready var current_hp = $GameHealth/Hp
 
+var cost_multi = 1
+
 #Runs every frame.
 #Updates everything HUD related and controlls the progress of the game.
 #Also ends the game.
@@ -43,6 +45,10 @@ func _process(delta: float) -> void:
 func _damage_curve() -> int:
 	var damage = pow(damage_x, 2)
 	return damage
+
+func _cost_multi() -> int:
+	cost_multi += 0.05
+	return cost_multi
 
 #Updates the text on the hp label over the progressbar on the hud
 func _update_current_hp() -> void:
@@ -106,19 +112,22 @@ func _update_multipliers(index: int) -> void:
 			addstats.emit("Bountiful", shop.upgrade_stats.values()[index])
 
 func _on_upgrade_1_pressed() -> void:
-	if amount.text.to_int() >= shop.upgrades.values()[shop.rand1]:
-		upgrade.emit(shop.upgrades.values()[shop.rand1])
+	if amount.text.to_int() >= shop.upgrades.values()[shop.rand1] * cost_multi:
+		_cost_multi()
+		upgrade.emit(shop.upgrades.values()[shop.rand1] * cost_multi)
 		_update_multipliers(shop.rand1)
-		shop._randomize_shop()
+		shop._randomize_shop(cost_multi)
 
 func _on_upgrade_2_pressed() -> void:
-	if amount.text.to_int() >= shop.upgrades.values()[shop.rand2]:
-		upgrade.emit(shop.upgrades.values()[shop.rand2])
+	if amount.text.to_int() >= shop.upgrades.values()[shop.rand2] * cost_multi:
+		_cost_multi()
+		upgrade.emit(shop.upgrades.values()[shop.rand2] * cost_multi)
 		_update_multipliers(shop.rand2)
-		shop._randomize_shop()
+		shop._randomize_shop(cost_multi)
 
 func _on_upgrade_3_pressed() -> void:
-	if amount.text.to_int() >= shop.upgrades.values()[shop.rand3]:
-		upgrade.emit(shop.upgrades.values()[shop.rand3])
+	if amount.text.to_int() >= shop.upgrades.values()[shop.rand3] * cost_multi:
+		_cost_multi()
+		upgrade.emit(shop.upgrades.values()[shop.rand3] * cost_multi)
 		_update_multipliers(shop.rand3)
-		shop._randomize_shop()
+		shop._randomize_shop(cost_multi)
