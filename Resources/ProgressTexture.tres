@@ -1,0 +1,7 @@
+[gd_resource type="CanvasTexture" load_steps=2 format=3 uid="uid://y0lqgfprdxqr"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_b5f7u"]
+
+[resource]
+specular_texture = SubResource("PlaceholderTexture2D_b5f7u")
+specular_color = Color(0.282353, 1, 0, 1)

@@ -1,0 +1,64 @@
+[gd_scene load_steps=8 format=3 uid="uid://bvh78pbj2v4n4"]
+
+[ext_resource type="FontFile" uid="uid://doy0vj2q67a4" path="res://Resources/retro-pixel-thick.otf" id="1_8uw7q"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8uw7q"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4hfd5"]
+bg_color = Color(0.652531, 0.47875, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rr0xh"]
+bg_color = Color(0.6, 0, 1, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4hfd5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xt5t5"]
+bg_color = Color(0.314818, 0.597053, 1, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rr0xh"]
+
+[node name="SettingsMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Tabs" type="TabContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 16
+theme_override_constants/side_margin = 2
+theme_override_fonts/font = ExtResource("1_8uw7q")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/tab_focus = SubResource("StyleBoxEmpty_8uw7q")
+theme_override_styles/tabbar_background = SubResource("StyleBoxFlat_4hfd5")
+theme_override_styles/panel = SubResource("StyleBoxFlat_rr0xh")
+theme_override_styles/tab_selected = SubResource("StyleBoxEmpty_4hfd5")
+theme_override_styles/tab_hovered = SubResource("StyleBoxFlat_xt5t5")
+theme_override_styles/tab_unselected = SubResource("StyleBoxEmpty_rr0xh")
+current_tab = 0
+
+[node name="Video" type="GridContainer" parent="Tabs"]
+layout_mode = 2
+columns = 2
+metadata/_tab_index = 0
+
+[node name="ItemList" type="Button" parent="Tabs/Video"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/outline_size = 16
+theme_override_fonts/font = ExtResource("1_8uw7q")
+theme_override_font_sizes/font_size = 32
+
+[node name="Audio" type="GridContainer" parent="Tabs"]
+visible = false
+layout_mode = 2
+columns = 2
+metadata/_tab_index = 1

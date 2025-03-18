@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://bcvxigmtrshdr"]
+
+[ext_resource type="Script" uid="uid://cwal3ibb71bti" path="res://Scripts/item_spawner.gd" id="1_wh6l4"]
+[ext_resource type="PackedScene" uid="uid://cybm7cgewiojp" path="res://Scenes/trash.tscn" id="2_4ajca"]
+
+[node name="ItemSpawner" type="Node2D"]
+script = ExtResource("1_wh6l4")
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="Trash" parent="." instance=ExtResource("2_4ajca")]

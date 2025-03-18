@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://cybm7cgewiojp"]
+
+[ext_resource type="Script" uid="uid://bptaw4dag37x1" path="res://Scripts/Trash.gd" id="1_738tn"]
+[ext_resource type="Texture2D" uid="uid://io5hd52y47rt" path="res://Resources/v1.2/Icons/Battery.png" id="1_ywl8i"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4wbjg"]
+radius = 7.0
+
+[node name="Trash" type="Node2D"]
+position = Vector2(500, 0)
+script = ExtResource("1_738tn")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0.499999, 0)
+scale = Vector2(0.9375, 1)
+texture = ExtResource("1_ywl8i")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_4wbjg")
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
