@@ -17,14 +17,15 @@ signal addstats(stat, percentage)
 var speed = 100
 var atr = 100
 var hp = 100
-var dashcc = 100
+var dashcd = 100
 var frt = 100
 @onready var spd_multi = $Multipliers/VBoxContainer/Speed
 @onready var atr_multi = $Multipliers/VBoxContainer/Attraction
-@onready var dashcc_multi = $Multipliers/VBoxContainer/Dashcc
+@onready var dashcd_multi = $Multipliers/VBoxContainer/Dashcc
 @onready var frt_multi = $Multipliers/VBoxContainer/Bountiful
 @onready var current_hp = $GameHealth/Hp
 
+#Necessary variable for usage before updating
 var cost_multi = 1
 
 #Runs every frame.
@@ -46,9 +47,11 @@ func _damage_curve() -> int:
 	var damage = pow(damage_x, 2)
 	return damage
 
-func _cost_multi() -> int:
-	cost_multi += 0.05
-	return cost_multi
+func _cost_curve() -> void:
+	cost_multi += 0.1
+
+func _stat_cost_curve(stat: float) -> void:
+	stat = pow(stat, 2)
 
 #Updates the text on the hp label over the progressbar on the hud
 func _update_current_hp() -> void:
@@ -101,33 +104,31 @@ func _update_multipliers(index: int) -> void:
 			overlife.size.x += shop.upgrade_stats.values()[index] * 6
 			_update_current_hp()
 		"Sigma":
-			damage_x += 0.5
+			print("not")
 		"Leg Day":
-			dashcc *= shop.upgrade_stats.values()[index]
-			dashcc_multi.text = "cc: " + str(roundi(dashcc)) + "%"
+			dashcd *= shop.upgrade_stats.values()[index]
+			dashcd_multi.text = "cd: " + str(roundi(dashcd)) + "%"
 			addstats.emit("Leg Day", shop.upgrade_stats.values()[index])
 		"Bountiful":
 			frt *= shop.upgrade_stats.values()[index]
 			frt_multi.text = "Frt: " + str(roundi(frt)) + "%"
 			addstats.emit("Bountiful", shop.upgrade_stats.values()[index])
+			
+	shop.upgrade_cost_multipliers[index] += pow(shop.upgrade_cost_multipliers[index], 2)
+	_cost_curve()
+	shop._randomize_shop(cost_multi)
 
 func _on_upgrade_1_pressed() -> void:
-	if amount.text.to_int() >= shop.upgrades.values()[shop.rand1] * cost_multi:
-		_cost_multi()
-		upgrade.emit(shop.upgrades.values()[shop.rand1] * cost_multi)
+	if amount.text.to_int() >= shop.upgrades.values()[shop.rand1] * cost_multi * shop.upgrade_cost_multipliers[shop.rand1]:
+		upgrade.emit(shop.upgrades.values()[shop.rand1] * cost_multi * shop.upgrade_cost_multipliers[shop.rand1])
 		_update_multipliers(shop.rand1)
-		shop._randomize_shop(cost_multi)
 
 func _on_upgrade_2_pressed() -> void:
-	if amount.text.to_int() >= shop.upgrades.values()[shop.rand2] * cost_multi:
-		_cost_multi()
-		upgrade.emit(shop.upgrades.values()[shop.rand2] * cost_multi)
+	if amount.text.to_int() >= shop.upgrades.values()[shop.rand2] * cost_multi * shop.upgrade_cost_multipliers[shop.rand2]:
+		upgrade.emit(shop.upgrades.values()[shop.rand2] * cost_multi * shop.upgrade_cost_multipliers[shop.rand2])
 		_update_multipliers(shop.rand2)
-		shop._randomize_shop(cost_multi)
 
 func _on_upgrade_3_pressed() -> void:
-	if amount.text.to_int() >= shop.upgrades.values()[shop.rand3] * cost_multi:
-		_cost_multi()
-		upgrade.emit(shop.upgrades.values()[shop.rand3] * cost_multi)
+	if amount.text.to_int() >= shop.upgrades.values()[shop.rand3] * cost_multi * shop.upgrade_cost_multipliers[shop.rand3]:
+		upgrade.emit(shop.upgrades.values()[shop.rand3] * cost_multi * shop.upgrade_cost_multipliers[shop.rand3])
 		_update_multipliers(shop.rand3)
-		shop._randomize_shop(cost_multi)

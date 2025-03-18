@@ -9,6 +9,9 @@ var upgrade_stats = {"Increases Trash Collected by 2x": 2, "Increases Movement S
 "Increases Attraction by 500%": 5, "Grants 10 ''Overhealth''": 10,
 "Stops the progress bar for 20 seconds": 20, "Decreases Dash Cooldown by 10%": 0.9}
 
+##Upgrade costmultipliers
+var upgrade_cost_multipliers = [1, 1, 1, 1, 1, 1]
+
 var rand1
 var rand2
 var rand3
@@ -30,11 +33,11 @@ func _process(delta: float) -> void:
 
 func _randomize_shop(cost_multi: float) -> void:
 	rand1 = randi_range(0, upgrades.size() - 1)
-	up1.text = str(upgrades.keys()[rand1]) + "\n" + "Price:" + str(upgrades.values()[rand1] * cost_multi) + " trash\n" + upgrade_stats.keys()[rand1]
+	up1.text = str(upgrades.keys()[rand1]) + "\n" + "Price: " + str(roundi(upgrades.values()[rand1] * cost_multi * upgrade_cost_multipliers[rand1])) + " trash\n" + upgrade_stats.keys()[rand1]
 	rand2 = randi_range(0, upgrades.size() - 1)
-	up2.text = str(upgrades.keys()[rand2]) + "\n" + "Price:" + str(upgrades.values()[rand2] * cost_multi) + " trash\n" + upgrade_stats.keys()[rand2]
+	up2.text = str(upgrades.keys()[rand2]) + "\n" + "Price: " + str(roundi(upgrades.values()[rand2] * cost_multi * upgrade_cost_multipliers[rand2])) + " trash\n" + upgrade_stats.keys()[rand2]
 	rand3 = randi_range(0, upgrades.size() - 1)
-	up3.text = str(upgrades.keys()[rand3]) + "\n" + "Price:" + str(upgrades.values()[rand3] * cost_multi) + " trash\n" + upgrade_stats.keys()[rand3]
+	up3.text = str(upgrades.keys()[rand3]) + "\n" + "Price: " + str(roundi(upgrades.values()[rand3] * cost_multi * upgrade_cost_multipliers[rand3])) + " trash\n" + upgrade_stats.keys()[rand3]
 	
 
 func _open_shop() -> void:
