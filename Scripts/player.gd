@@ -25,7 +25,6 @@ var GHOST = preload("res://Scenes/Ghost.tscn")
 @onready var trash_display = $Camera2D/HUD/Amount
 @onready var HUD = $Camera2D/HUD
 var COLLECTED = 0
-var COLLECTION_MULTI = 1
 
 # Animations
 @onready var animation = $Sprite2D
@@ -97,7 +96,7 @@ func _animation_handler() -> void:
 			animation.play("walk")
 
 func _add_trash() -> void:
-	COLLECTED += 1 * COLLECTION_MULTI
+	COLLECTED += 1 * TRASH_MULTI
 	trash_display.text = str(roundi(COLLECTED))
 	HUD._add_to_health()
 
@@ -115,3 +114,4 @@ func _update_multipliers(stat: String, percentage: float) -> void:
 			DASH_COOLDOWN_REDUCTION_MULTI *= percentage
 		"Bountiful":
 			TRASH_MULTI *= percentage
+			print(str(TRASH_MULTI))
