@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://bvh78pbj2v4n4"]
 
 [ext_resource type="FontFile" uid="uid://doy0vj2q67a4" path="res://Resources/retro-pixel-thick.otf" id="1_8uw7q"]
-[ext_resource type="Script" uid="uid://dun70661ay1ya" path="res://Scenes/settings_menu.gd" id="1_bxjf0"]
+[ext_resource type="Script" uid="uid://dun70661ay1ya" path="res://Scripts/settings_menu.gd" id="1_bxjf0"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8uw7q"]
 

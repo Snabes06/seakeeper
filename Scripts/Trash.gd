@@ -12,7 +12,7 @@ func _ready():
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.name == "PickupArea" and not collected:
-		count.emit()
+		body.get_parent()._add_trash()
 		collect_trash()
 
 func collect_trash():

@@ -1,8 +1,5 @@
 extends CharacterBody2D
 
-signal trashmulti(multi)
-
-
 # Constants
 # @export: Allows tweaking properties in inspector window
 @export var MOVEMENT_SPEED = 100
@@ -24,29 +21,21 @@ var DASH_TIMER: float = 0.0
 var VELOCITY = Vector2.ZERO
 var GHOST = preload("res://Scenes/Ghost.tscn")
 
-# Node-access
+# Trash Counting
+@onready var trash_display = $Camera2D/HUD/Amount
+@onready var HUD = $Camera2D/HUD
+var COLLECTED = 0
+var COLLECTION_MULTI = 1
+
+# Animations
 @onready var animation = $Sprite2D
 
-# 
+# Runs every frame
 func _process(delta: float) -> void:
 	_inputs()
 	_dash(delta)
 	_animation_handler()
 	move_and_slide()
-
-
-func _update_multipliers(stat: String, percentage: float) -> void:
-	match(stat):
-		"Zoomies":
-			SPEED_MULTI += percentage
-		"Rizz":
-			$PickupArea/PickupRadius.scale += Vector2(percentage, percentage)
-		"Leg Day":
-			DASH_COOLDOWN_REDUCTION_MULTI *= percentage
-		"Bountiful":
-			TRASH_MULTI *= percentage
-			trashmulti.emit(TRASH_MULTI)
-		
 
 # Checks player input, inputs while dashing are ignored
 func _inputs() -> void:
@@ -106,3 +95,23 @@ func _animation_handler() -> void:
 			animation.play("idle")
 		else:
 			animation.play("walk")
+
+func _add_trash() -> void:
+	COLLECTED += 1 * COLLECTION_MULTI
+	trash_display.text = str(roundi(COLLECTED))
+	HUD._add_to_health()
+
+func _on_hud_upgrade(cost: Variant) -> void:
+	COLLECTED -= cost
+	trash_display.text = str(roundi(COLLECTED))
+
+func _update_multipliers(stat: String, percentage: float) -> void:
+	match(stat):
+		"Zoomies":
+			SPEED_MULTI += percentage
+		"Rizz":
+			get_child(2).scale += Vector2(percentage, percentage)
+		"Leg Day":
+			DASH_COOLDOWN_REDUCTION_MULTI *= percentage
+		"Bountiful":
+			TRASH_MULTI *= percentage

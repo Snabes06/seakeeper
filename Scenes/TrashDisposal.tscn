@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://dafsvfqkt7vk0"]
+
+[ext_resource type="Texture2D" uid="uid://cyvcy52uvu4ij" path="res://Resources/v1.2/Icons/Trashbin.png" id="1_g5ns2"]
+[ext_resource type="Script" uid="uid://tmffy25fj5ll" path="res://Scripts/trash_disposal.gd" id="2_8qsia"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g5ns2"]
+
+[node name="TrashDisposal" type="Sprite2D"]
+position = Vector2(-1.3113e-06, 0)
+scale = Vector2(1, 1)
+texture = ExtResource("1_g5ns2")
+offset = Vector2(0.5, -0.5)
+script = ExtResource("2_8qsia")
+
+[node name="DumpTrash" type="Area2D" parent="."]
+
+[node name="Area" type="CollisionShape2D" parent="DumpTrash"]
+shape = SubResource("CircleShape2D_g5ns2")
+
+[node name="Count" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[connection signal="body_entered" from="DumpTrash" to="." method="_on_body_entered"]

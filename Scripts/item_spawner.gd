@@ -8,8 +8,6 @@ extends Node2D
 @export var trash_scene: PackedScene = preload("res://Scenes/trash.tscn")
 @export var max_trash: int = 50
 
-signal count
-
 func _ready():
 	randomize()
 
@@ -22,12 +20,7 @@ func spawn_item():
 		return
 	var instance = trash_scene.instantiate()  # Instance a piece of trash
 	instance.global_position = get_random_screen_position()  # Position randomly on the screen
-	instance.connect("count", forward)
 	trash_container.add_child(instance)
-
-
-func forward():
-	count.emit()
 
 func get_random_screen_position() -> Vector2:
 	var x = randf_range(-370, 370)
