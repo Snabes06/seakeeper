@@ -28,7 +28,7 @@ var GHOST = preload("res://Scenes/Ghost.tscn")
 @onready var animation = $Sprite2D
 
 # 
-func _physics_process(delta: float) -> void:
+func _process(delta: float) -> void:
 	_inputs()
 	_dash(delta)
 	_animation_handler()
