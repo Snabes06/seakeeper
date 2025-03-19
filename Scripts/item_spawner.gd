@@ -1,7 +1,7 @@
 extends Node2D
 
 @onready var spawn_timer: Timer = get_node("Timer")
-@onready var trash_container: Node2D = get_node("Trash")
+@onready var trash_container: Node2D = get_node("TrashContainer")
 
 # Constants
 # @export: Allows tweaking properties in inspector window
@@ -25,10 +25,11 @@ func spawn_item():
 	instance.connect("count", forward)
 	trash_container.add_child(instance)
 
+
 func forward():
 	count.emit()
 
 func get_random_screen_position() -> Vector2:
-	var x = randf_range(-850, -250)
+	var x = randf_range(-370, 370)
 	var y = randf_range(-250, 250)
 	return Vector2(x, y)
