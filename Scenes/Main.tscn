@@ -164,6 +164,6 @@ visible = false
 position = Vector2(-104, -74)
 
 [connection signal="addstats" from="Player/Camera2D/HUD" to="Player" method="_update_multipliers"]
-[connection signal="upgrade" from="Player/Camera2D/HUD" to="Player" method="_on_hud_upgrade"]
+[connection signal="remove" from="Player/Camera2D/HUD" to="Player" method="_remove"]
 
 [editable path="ItemSpawner"]

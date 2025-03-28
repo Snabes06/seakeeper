@@ -3,7 +3,7 @@ extends CanvasLayer
 var timer = 0.5
 var decay = 3
 var damage_x = 1
-signal upgrade(cost)
+signal remove(cost)
 signal addstats(stat, percentage)
 
 #Node access
@@ -12,6 +12,10 @@ signal addstats(stat, percentage)
 @onready var overlife = $Overlife
 @onready var gameover = $GameOver
 @onready var shop = $Shop
+
+## Json objects
+@onready var json = load("res://Classes/CreateUpgrade.tres").get_data()
+@onready var upgrade = json["Upgrade"]
 
 #HUD variables :: Stats
 var speed = 100
@@ -86,49 +90,47 @@ func _add_to_health() -> void:
 func _end_game() -> void:
 	gameover.show()
 
+func _on_upgrade_1_pressed() -> void:
+	_collective_upgrade_function(shop.rand1)
+
+func _on_upgrade_2_pressed() -> void:
+	_collective_upgrade_function(shop.rand2)
+
+func _on_upgrade_3_pressed() -> void:
+	_collective_upgrade_function(shop.rand3)
+
+func _collective_upgrade_function(index: int) -> void:
+	if amount.text.to_int() >= upgrade[index]["Cost"] * cost_multi * shop.upgrade_cost_multipliers[index]:
+		remove.emit(upgrade[index]["Cost"] * cost_multi * shop.upgrade_cost_multipliers[index])
+		_update_multipliers(index)
 
 func _update_multipliers(index: int) -> void:
-	match(shop.upgrades.keys()[index]):
+	match(upgrade[index]["Name"]):
 		"Zoomies":
-			speed += shop.upgrade_stats.values()[index]*100
+			speed += upgrade[index]["Value"]*100
 			spd_multi.text = "Spd: " + str(roundi(speed)) + "%"
-			addstats.emit("Zoomies", shop.upgrade_stats.values()[index])
+			addstats.emit("Zoomies", upgrade[index]["Value"])
 		"Rizz":
-			atr += shop.upgrade_stats.values()[index]*100
+			atr += upgrade[index]["Value"]*100
 			atr_multi.text = "Atr: " + str(roundi(atr)) + "%"
-			addstats.emit("Rizz", shop.upgrade_stats.values()[index])
+			addstats.emit("Rizz", upgrade[index]["Value"])
 		"Lifeline": 
-			overlife.max_value += shop.upgrade_stats.values()[index]
+			overlife.max_value += upgrade[index]["Value"]
 			overlife.value = overlife.max_value
-			hp += shop.upgrade_stats.values()[index]
-			overlife.size.x += shop.upgrade_stats.values()[index] * 6
+			hp += upgrade[index]["Value"]
+			overlife.size.x += upgrade[index]["Value"] * 6
 			_update_current_hp()
 		"Sigma":
 			print("not")
 		"Leg Day":
-			dashcd *= shop.upgrade_stats.values()[index]
+			dashcd *= upgrade[index]["Value"]
 			dashcd_multi.text = "cd: " + str(roundi(dashcd)) + "%"
-			addstats.emit("Leg Day", shop.upgrade_stats.values()[index])
+			addstats.emit("Leg Day", upgrade[index]["Value"])
 		"Bountiful":
-			frt *= shop.upgrade_stats.values()[index]
+			frt *= upgrade[index]["Value"]
 			frt_multi.text = "Frt: " + str(roundi(frt)) + "%"
-			addstats.emit("Bountiful", shop.upgrade_stats.values()[index])
+			addstats.emit("Bountiful", upgrade[index]["Value"])
 			
 	shop.upgrade_cost_multipliers[index] += pow(shop.upgrade_cost_multipliers[index], 2)
 	_cost_curve()
 	shop._randomize_shop(cost_multi)
-
-func _on_upgrade_1_pressed() -> void:
-	if amount.text.to_int() >= shop.upgrades.values()[shop.rand1] * cost_multi * shop.upgrade_cost_multipliers[shop.rand1]:
-		upgrade.emit(shop.upgrades.values()[shop.rand1] * cost_multi * shop.upgrade_cost_multipliers[shop.rand1])
-		_update_multipliers(shop.rand1)
-
-func _on_upgrade_2_pressed() -> void:
-	if amount.text.to_int() >= shop.upgrades.values()[shop.rand2] * cost_multi * shop.upgrade_cost_multipliers[shop.rand2]:
-		upgrade.emit(shop.upgrades.values()[shop.rand2] * cost_multi * shop.upgrade_cost_multipliers[shop.rand2])
-		_update_multipliers(shop.rand2)
-
-func _on_upgrade_3_pressed() -> void:
-	if amount.text.to_int() >= shop.upgrades.values()[shop.rand3] * cost_multi * shop.upgrade_cost_multipliers[shop.rand3]:
-		upgrade.emit(shop.upgrades.values()[shop.rand3] * cost_multi * shop.upgrade_cost_multipliers[shop.rand3])
-		_update_multipliers(shop.rand3)

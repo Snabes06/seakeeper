@@ -1,0 +1,36 @@
+[gd_resource type="JSON" format=3 uid="uid://dlaa2x1vo5a5s"]
+
+[resource]
+data = {
+"Upgrade": [{
+"Cost": 20.0,
+"Description": "Increases Trash Collected by 2x",
+"Name": "Bountiful",
+"Value": 2.0
+}, {
+"Cost": 10.0,
+"Description": "Increases Movement Speed by 20%",
+"Name": "Zoomies",
+"Value": 0.2
+}, {
+"Cost": 30.0,
+"Description": "Increases Attraction by 500%",
+"Name": "Rizz",
+"Value": 5.0
+}, {
+"Cost": 20.0,
+"Description": "Grants 10 Overhealth",
+"Name": "Lifeline",
+"Value": 10.0
+}, {
+"Cost": 50.0,
+"Description": "Stops the progress bar for 20 seconds",
+"Name": "Sigma",
+"Value": 20.0
+}, {
+"Cost": 20.0,
+"Description": "Decreases Dash Cooldown by 10%",
+"Name": "Leg Day",
+"Value": 0.9
+}]
+}

@@ -100,7 +100,7 @@ func _add_trash() -> void:
 	trash_display.text = str(roundi(COLLECTED))
 	HUD._add_to_health()
 
-func _on_hud_upgrade(cost: Variant) -> void:
+func _remove(cost: Variant) -> void:
 	COLLECTED -= cost
 	trash_display.text = str(roundi(COLLECTED))
 
