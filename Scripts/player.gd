@@ -114,4 +114,3 @@ func _update_multipliers(stat: String, percentage: float) -> void:
 			DASH_COOLDOWN_REDUCTION_MULTI *= percentage
 		"Bountiful":
 			TRASH_MULTI *= percentage
-			print(str(TRASH_MULTI))

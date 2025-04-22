@@ -1,11 +1,13 @@
-[gd_scene load_steps=10 format=3 uid="uid://dm6005n22cblh"]
+[gd_scene load_steps=13 format=3 uid="uid://dm6005n22cblh"]
 
 [ext_resource type="Script" uid="uid://cp2k4d5eb0du3" path="res://Scripts/hud.gd" id="1_j2wtr"]
 [ext_resource type="FontFile" uid="uid://doy0vj2q67a4" path="res://Resources/retro-pixel-thick.otf" id="2_gj7im"]
 [ext_resource type="Texture2D" uid="uid://bh4f88olrqwb5" path="res://Resources/forest_/forest_.png" id="3_eaat0"]
 [ext_resource type="Texture2D" uid="uid://c8ofd60y2x7uk" path="res://Resources/ProgressColor.jpg" id="4_u75k8"]
+[ext_resource type="Script" uid="uid://06tvkthqln85" path="res://Scenes/game_over.gd" id="5_43w4t"]
 [ext_resource type="Script" uid="uid://t5mi6mgb6m57" path="res://Scripts/shop.gd" id="5_hkhr5"]
 [ext_resource type="Texture2D" uid="uid://0w3e25wpiwg4" path="res://Resources/OverlifeColor.png" id="6_36knk"]
+[ext_resource type="Script" uid="uid://biopryr451mj7" path="res://Scenes/rounds.gd" id="7_8jye8"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_f43u2"]
 atlas = ExtResource("3_eaat0")
@@ -22,6 +24,18 @@ corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_43w4t"]
+bg_color = Color(0.156863, 0.247059, 0.301961, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8jye8"]
 bg_color = Color(0.157539, 0.24666, 0.302998, 1)
@@ -40,7 +54,6 @@ follow_viewport_scale = 0.3
 script = ExtResource("1_j2wtr")
 
 [node name="Amount" type="Label" parent="."]
-process_mode = 3
 z_index = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -91,6 +104,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="GameOver" type="Label" parent="."]
+process_mode = 3
 visible = false
 anchors_preset = 8
 anchor_left = 0.5
@@ -103,10 +117,12 @@ offset_right = 20.0
 offset_bottom = 11.5
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/outline_size = 20
+theme_override_constants/outline_size = 64
 theme_override_fonts/font = ExtResource("2_gj7im")
 theme_override_font_sizes/font_size = 128
-text = "Game Over"
+text = "Game Over
+press esc to exit"
+script = ExtResource("5_43w4t")
 
 [node name="Shop" type="Panel" parent="."]
 process_mode = 3
@@ -125,24 +141,40 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_36asn")
 script = ExtResource("5_hkhr5")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Shop"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Shop"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -500.0
-offset_top = -75.0
-offset_right = 500.0
-offset_bottom = 75.0
+offset_left = -669.0
+offset_top = -174.0
+offset_right = 645.0
+offset_bottom = 86.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 60
 
-[node name="Upgrade1" type="Button" parent="Shop/HBoxContainer"]
+[node name="Skip" type="Button" parent="Shop/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 2
+theme_override_constants/outline_size = 16
+theme_override_fonts/font = ExtResource("2_gj7im")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_43w4t")
+action_mode = 0
+text = "Skip"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Shop/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="Upgrade1" type="Button" parent="Shop/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/outline_size = 8
+theme_override_constants/outline_size = 16
 theme_override_fonts/font = ExtResource("2_gj7im")
 theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxFlat_8jye8")
@@ -150,10 +182,11 @@ text = "Item1
 
 price: 20 trash."
 
-[node name="Upgrade2" type="Button" parent="Shop/HBoxContainer"]
+[node name="Upgrade2" type="Button" parent="Shop/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/outline_size = 8
+size_flags_vertical = 8
+theme_override_constants/outline_size = 16
 theme_override_fonts/font = ExtResource("2_gj7im")
 theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxFlat_8jye8")
@@ -161,10 +194,10 @@ text = "Item2
 
 price: 50 trash."
 
-[node name="Upgrade3" type="Button" parent="Shop/HBoxContainer"]
+[node name="Upgrade3" type="Button" parent="Shop/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/outline_size = 8
+theme_override_constants/outline_size = 16
 theme_override_fonts/font = ExtResource("2_gj7im")
 theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxFlat_8jye8")
@@ -205,12 +238,12 @@ theme_override_fonts/font = ExtResource("2_gj7im")
 theme_override_font_sizes/font_size = 64
 text = "Spd: 100%"
 
-[node name="Dashcc" type="Label" parent="Multipliers/VBoxContainer"]
+[node name="Dashcd" type="Label" parent="Multipliers/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/outline_size = 32
 theme_override_fonts/font = ExtResource("2_gj7im")
 theme_override_font_sizes/font_size = 64
-text = "cc: 100%"
+text = "Dash: 100%"
 
 [node name="Bountiful" type="Label" parent="Multipliers/VBoxContainer"]
 layout_mode = 2
@@ -233,6 +266,39 @@ max_value = 0.0
 nine_patch_stretch = true
 texture_progress = ExtResource("6_36knk")
 
-[connection signal="pressed" from="Shop/HBoxContainer/Upgrade1" to="." method="_on_upgrade_1_pressed"]
-[connection signal="pressed" from="Shop/HBoxContainer/Upgrade2" to="." method="_on_upgrade_2_pressed"]
-[connection signal="pressed" from="Shop/HBoxContainer/Upgrade3" to="." method="_on_upgrade_3_pressed"]
+[node name="Rounds" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -97.0
+offset_top = -355.0
+offset_right = 103.0
+offset_bottom = -315.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 32
+theme_override_fonts/font = ExtResource("2_gj7im")
+theme_override_font_sizes/font_size = 64
+text = "Round 1"
+script = ExtResource("7_8jye8")
+
+[node name="RoundTimer" type="Label" parent="Rounds"]
+layout_direction = 2
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -4.082
+anchor_top = -1.9
+anchor_right = -4.082
+anchor_bottom = -1.9
+offset_left = 0.0560303
+theme_override_constants/outline_size = 32
+theme_override_fonts/font = ExtResource("2_gj7im")
+theme_override_font_sizes/font_size = 64
+text = "0"
+
+[connection signal="pressed" from="Shop/VBoxContainer/Skip" to="Shop" method="_on_skip_pressed"]
+[connection signal="pressed" from="Shop/VBoxContainer/HBoxContainer/Upgrade1" to="." method="_on_upgrade_1_pressed"]
+[connection signal="pressed" from="Shop/VBoxContainer/HBoxContainer/Upgrade2" to="." method="_on_upgrade_2_pressed"]
+[connection signal="pressed" from="Shop/VBoxContainer/HBoxContainer/Upgrade3" to="." method="_on_upgrade_3_pressed"]
