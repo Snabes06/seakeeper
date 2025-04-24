@@ -1,12 +1,12 @@
 extends CharacterBody2D
 
-# Constants
 # @export: Allows tweaking properties in inspector window
-@export var MOVEMENT_SPEED = 100
-@export var DASH_SPEED = 250
-@export var DASH_DURATION = 0.25
-@export var DASH_COOLDOWN = 0.5
-@export var GHOST_SPACING = 1
+@export var HP = 100 ## Player max health
+@export var TRASH = 0 ## Trash in player inventory
+@export var MOVEMENT_SPEED = 100 ## Player movement speed
+@export var DASH_SPEED = 250 ## Player dash speed
+@export var DASH_DURATION = 0.25 ## Player dash duration
+@export var DASH_COOLDOWN = 0.5 ## Player dash cooldown
 
 # Multipliers
 var SPEED_MULTI = 1
@@ -30,14 +30,14 @@ var COLLECTED = 0
 @onready var animation = $Sprite2D
 
 # Runs every frame
-func _process(delta: float) -> void:
-	_inputs()
+func _physics_process(delta: float) -> void:
+	inputs()
 	_dash(delta)
 	_animation_handler()
 	move_and_slide()
 
 # Checks player input, inputs while dashing are ignored
-func _inputs() -> void:
+func inputs() -> void:
 	if IS_DASHING:
 		return
 	else:
@@ -95,14 +95,15 @@ func _animation_handler() -> void:
 		else:
 			animation.play("walk")
 
-func _add_trash() -> void:
-	COLLECTED += 1 * TRASH_MULTI
-	trash_display.text = str(roundi(COLLECTED))
+func on_trash_collected() -> void:
+	HP += 1
+	TRASH += 1 * TRASH_MULTI
+	trash_display.text = str(roundi(TRASH))
 	HUD._add_to_health()
 
 func _remove(cost: Variant) -> void:
-	COLLECTED -= cost
-	trash_display.text = str(roundi(COLLECTED))
+	TRASH -= cost
+	trash_display.text = str(roundi(TRASH))
 
 func _update_multipliers(stat: String, percentage: float) -> void:
 	match(stat):

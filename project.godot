@@ -22,6 +22,12 @@ window/size/mode=2
 window/stretch/mode="viewport"
 window/stretch/aspect="keep_height"
 
+[importer_defaults]
+
+animation_library={
+&"animation/fps": 60.0
+}
+
 [input]
 
 move_up={

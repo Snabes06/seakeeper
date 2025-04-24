@@ -13,7 +13,7 @@ func _ready():
 # Reciver method for body nodes entering
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.name == "PickupArea" and not collected:
-		body.get_parent()._add_trash() # +1 trash
+		body.get_parent().on_trash_collected() # +1 trash
 		_collect_trash(body)
 
 # Counts the trash as collected, plays a pickup effect and removes the node from scene tree
@@ -24,10 +24,6 @@ func _collect_trash(body: Node2D):
 	_add_effects(body)
 
 func _add_effects(body: Node2D) -> void:
-	var time = 1
-	var pull = create_tween()
-	while time > 0:
-		time -= 0.01
-		pull.tween_property(self, "position", body.get_parent().position, time) # Move towards player
-		print(str(time))
-	pull.tween_callback(Callable(self, "queue_free")) # Remove node
+	var shrink = create_tween()
+	shrink.tween_property(self, "scale", Vector2(0, 0), 0.2) # Shrink
+	shrink.tween_callback(Callable(self, "queue_free")) # Remove node

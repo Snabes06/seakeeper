@@ -69,7 +69,7 @@ func _decay_overlife(delta: float) -> void:
 		decay = 3
 
 # adds player health when picking up trash, will likely be replaced by different system in future updates.
-func _add_to_health() -> void:
+func update_health() -> void:
 	if health.value == 100:
 		overlife.value += 1
 	else:

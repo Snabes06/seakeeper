@@ -4,7 +4,6 @@ extends Node2D
 @onready var spawn_timer: Timer = get_node("Timer")
 @onready var trash_container: Node2D = get_node("TrashContainer")
 
-# constants
 # @export: allows tweaking properties in inspector window.
 @export var trash_scene: PackedScene = preload("res://Scenes/trash.tscn")
 @export var max_trash: int = 50
@@ -18,7 +17,7 @@ func spawn_item():
 		return
 	var instance = trash_scene.instantiate()  # Instance a piece of trash.
 	instance.global_position = get_random_screen_position()  # Position randomly on the screen.
-	trash_container.add_child(instance)
+	trash_container.add_child(instance) # Adds the node to the scene tree.
 
 func get_random_screen_position() -> Vector2:
 	var x = randf_range(-370, 370) # selects a random x cordinate on screen.
