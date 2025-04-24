@@ -1,8 +1,15 @@
 extends CharacterBody2D
 
 # @export: Allows tweaking properties in inspector window
-@export var HP = 100 ## Player max health
-@export var TRASH = 0 ## Trash in player inventory
+@export var HP_MAX = 100 ## Player max health
+@export var HP = 100 ## Player current health
+@export var HP_OL_MAX = 0 ## Player max overlife
+@export var HP_OL = 0 ## Player current overlife
+
+@export var DAMAGE_INTERVAL = 0.5 ## Time between damage taken
+
+@export var TRASH = 0 ## Player current trash
+
 @export var MOVEMENT_SPEED = 100 ## Player movement speed
 @export var DASH_SPEED = 250 ## Player dash speed
 @export var DASH_DURATION = 0.25 ## Player dash duration
@@ -22,22 +29,24 @@ var VELOCITY = Vector2.ZERO
 var GHOST = preload("res://Scenes/Ghost.tscn")
 
 # Trash Counting
-@onready var trash_display = $Camera2D/HUD/Amount
 @onready var HUD = $Camera2D/HUD
-var COLLECTED = 0
 
 # Animations
 @onready var animation = $Sprite2D
 
 # Runs every frame
 func _physics_process(delta: float) -> void:
-	inputs()
+	if HP_OL == 0:
+		_take_damage(delta, 1) # Damage hp
+	else:
+		_take_ol_damage(delta, 1) # Damage overlife
+	_inputs()
 	_dash(delta)
 	_animation_handler()
 	move_and_slide()
 
 # Checks player input, inputs while dashing are ignored
-func inputs() -> void:
+func _inputs() -> void:
 	if IS_DASHING:
 		return
 	else:
@@ -96,22 +105,48 @@ func _animation_handler() -> void:
 			animation.play("walk")
 
 func on_trash_collected() -> void:
-	HP += 1
 	TRASH += 1 * TRASH_MULTI
-	trash_display.text = str(roundi(TRASH))
-	HUD._add_to_health()
+	HUD.update_element("TRASH", TRASH)
+	_heal_hp()
+
+func _heal_hp() -> void:
+	if HP < 100:
+		HP += 1
+	if HP == 100 and HP_OL < HP_OL_MAX:
+		HP_OL += 1
+	HUD.update_element("HP", HP)
+	HUD.update_element("HP_OVERLIFE", HP_OL)
+
+func _take_damage(delta: float, damage: int) -> void:
+	DAMAGE_INTERVAL -= delta
+	if DAMAGE_INTERVAL <= 0:
+		HP -= damage
+		HUD.update_element("HP", HP)
+		HUD.update_element("HP_OVERLIFE", HP_OL)
+		DAMAGE_INTERVAL = 0.5
+
+func _take_ol_damage(delta: float, damage: int) -> void:
+	DAMAGE_INTERVAL -= delta
+	if DAMAGE_INTERVAL <= 0:
+		HP_OL -= damage
+		HUD.update_element("HP", HP)
+		HUD.update_element("HP_OVERLIFE", HP_OL)
+		DAMAGE_INTERVAL = 0.5
 
 func _remove(cost: Variant) -> void:
 	TRASH -= cost
-	trash_display.text = str(roundi(TRASH))
+	HUD.update_element("TRASH", TRASH)
 
-func _update_multipliers(stat: String, percentage: float) -> void:
+func _update_multipliers(stat: String, value: float) -> void:
 	match(stat):
 		"Zoomies":
-			SPEED_MULTI += percentage
+			SPEED_MULTI += value
 		"Rizz":
-			get_child(2).scale += Vector2(percentage, percentage)
+			get_child(2).scale += Vector2(value, value)
 		"Leg Day":
-			DASH_COOLDOWN_REDUCTION_MULTI *= percentage
+			DASH_COOLDOWN_REDUCTION_MULTI *= value
 		"Bountiful":
-			TRASH_MULTI *= percentage
+			TRASH_MULTI *= value
+		"Lifeline":
+			HP_OL_MAX = value
+			HP_OL = value

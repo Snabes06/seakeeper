@@ -36,21 +36,12 @@ var frt = 100
 # updates hp related functions therefore progressing the game
 # also resulting in the end of the game.
 func _process(delta: float) -> void:
-	current_hp.text = str(roundi(health.value + overlife.value)) + "/" + str(roundi(health.max_value + overlife.max_value))
 	_decay_overlife(delta)
 	if overlife.value > 0:
 		_remove_from_overlife(delta)
-	else:
-		_remove_from_health(delta)
 	if health.value <= 0:
 		_end_game()
 
-# removes health from player
-func _remove_from_health(delta: float) -> void:
-	timer -= delta
-	if timer <= 0:
-		health.value -= damage_x
-		timer = 0.5
 
 # removes overlife health from player *is prioritized so that it is removed first
 func _remove_from_overlife(delta: float) -> void:
@@ -68,12 +59,18 @@ func _decay_overlife(delta: float) -> void:
 			overlife.size.x -= 6
 		decay = 3
 
-# adds player health when picking up trash, will likely be replaced by different system in future updates.
-func update_health() -> void:
-	if health.value == 100:
-		overlife.value += 1
-	else:
-		health.value += 1
+## Updates specific hud element.
+func update_element(element: String, value: Variant) -> void:
+	match element:
+		"HP":
+			health.value = value
+			current_hp.text = str(roundi(health.value + overlife.value)) + "/" + str(roundi(health.max_value + overlife.max_value))
+		"HP_OVERLIFE":
+			overlife.value = value
+			current_hp.text = str(roundi(health.value + overlife.value)) + "/" + str(roundi(health.max_value + overlife.max_value))
+		"TRASH":
+			amount.text = str(roundi(value))
+		
 
 # ends game
 func _end_game() -> void:
@@ -122,7 +119,7 @@ func _update_multipliers(index: int) -> void:
 			
 			# increases size of overlife bar and total hp display over hp bar.
 			overlife.size.x += upgrade[index]["Value"] * 6
-			current_hp.text = str(roundi(health.value + overlife.value)) + "/" + str(roundi(health.max_value + overlife.max_value))
+			addstats.emit("Lifeline", upgrade[index]["Value"]) # sends a signal increasing players attraction radius.
 		"Sigma":
 			print("not")
 		"Leg Day":

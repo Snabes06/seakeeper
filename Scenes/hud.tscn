@@ -7,7 +7,7 @@
 [ext_resource type="Script" uid="uid://06tvkthqln85" path="res://Scenes/game_over.gd" id="5_43w4t"]
 [ext_resource type="Script" uid="uid://t5mi6mgb6m57" path="res://Scripts/shop.gd" id="5_hkhr5"]
 [ext_resource type="Texture2D" uid="uid://0w3e25wpiwg4" path="res://Resources/OverlifeColor.png" id="6_36knk"]
-[ext_resource type="Script" uid="uid://biopryr451mj7" path="res://Scenes/rounds.gd" id="7_8jye8"]
+[ext_resource type="Script" uid="uid://biopryr451mj7" path="res://Scripts/rounds.gd" id="7_8jye8"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_f43u2"]
 atlas = ExtResource("3_eaat0")
