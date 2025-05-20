@@ -37,30 +37,30 @@ var frt = 100
 # also resulting in the end of the game.
 func _process(delta: float) -> void:
 	current_hp.text = str(roundi(health.value + overlife.value)) + "/" + str(roundi(health.max_value + overlife.max_value))
-	_decay_overlife(delta)
+	decayOverlife(delta)
 	if overlife.value > 0:
-		_remove_from_overlife(delta)
+		removeFromOverlife(delta)
 	else:
-		_remove_from_health(delta)
+		removeFromHealth(delta)
 	if health.value <= 0:
-		_end_game()
+		endGame()
 
 # removes health from player
-func _remove_from_health(delta: float) -> void:
+func removeFromHealth(delta: float) -> void:
 	timer -= delta
 	if timer <= 0:
 		health.value -= damage_x
 		timer = 0.5
 
 # removes overlife health from player *is prioritized so that it is removed first
-func _remove_from_overlife(delta: float) -> void:
+func removeFromOverlife(delta: float) -> void:
 	timer -= delta
 	if timer <= 0:
 		overlife.value -= damage_x
 		timer = 0.5
 
 # decays 1 hp max overlife every 3 seconds
-func _decay_overlife(delta: float) -> void:
+func decayOverlife(delta: float) -> void:
 	decay -= delta
 	if decay <= 0:
 		if overlife.max_value > 0:
@@ -69,14 +69,14 @@ func _decay_overlife(delta: float) -> void:
 		decay = 3
 
 # adds player health when picking up trash, will likely be replaced by different system in future updates.
-func update_health() -> void:
+func updateHealth() -> void:
 	if health.value == 100:
 		overlife.value += 1
 	else:
 		health.value += 1
 
 # ends game
-func _end_game() -> void:
+func endGame() -> void:
 	gameover.show() # changes the visibilty of the gameover text to true.
 	get_tree().paused = true # pauses the scenetree.
 

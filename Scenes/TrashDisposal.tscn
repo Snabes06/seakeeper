@@ -1,7 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://dafsvfqkt7vk0"]
+[gd_scene load_steps=4 format=3 uid="uid://4guvfmsvspaf"]
 
 [ext_resource type="Texture2D" uid="uid://cyvcy52uvu4ij" path="res://Resources/v1.2/Icons/Trashbin.png" id="1_g5ns2"]
-[ext_resource type="Script" uid="uid://tmffy25fj5ll" path="res://Scripts/trash_disposal.gd" id="2_8qsia"]
+
+[sub_resource type="GDScript" id="GDScript_g5ns2"]
+script/source = "extends Sprite2D
+
+
+var tossed = false
+
+
+
+@onready var count = $Count
+
+
+func _on_body_entered(body: Node2D) -> void:
+	if body is CharacterBody2D and not tossed:
+		count.text = str(1)
+"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_g5ns2"]
 
@@ -9,7 +24,7 @@
 position = Vector2(-1.3113e-06, 0)
 texture = ExtResource("1_g5ns2")
 offset = Vector2(0.5, -0.5)
-script = ExtResource("2_8qsia")
+script = SubResource("GDScript_g5ns2")
 
 [node name="DumpTrash" type="Area2D" parent="."]
 

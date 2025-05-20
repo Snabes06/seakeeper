@@ -9,10 +9,10 @@ extends CharacterBody2D
 @export var DASH_COOLDOWN = 0.5 ## Player dash cooldown
 
 # Multipliers
-var SPEED_MULTI = 1
-var RANGE_MULTI = 1
-var DASH_COOLDOWN_REDUCTION_MULTI = 1
-var TRASH_MULTI = 1
+var speed_multi = 1
+var range_multi = 1
+var dash_cooldown_reduction_multi = 1
+var trash_multi = 1
 
 # Variables
 var IS_DASHING = false
@@ -32,8 +32,8 @@ var COLLECTED = 0
 # Runs every frame
 func _physics_process(delta: float) -> void:
 	inputs()
-	_dash(delta)
-	_animation_handler()
+	dash(delta)
+	animationHandler()
 	move_and_slide()
 
 # Checks player input, inputs while dashing are ignored
@@ -42,21 +42,21 @@ func inputs() -> void:
 		return
 	else:
 		VELOCITY = Input.get_vector("move_left", "move_right", "move_up", "move_down")
-		velocity = VELOCITY.normalized() * MOVEMENT_SPEED * SPEED_MULTI
+		velocity = VELOCITY.normalized() * MOVEMENT_SPEED * speed_multi
 		if Input.is_action_just_pressed("dash") and COOLDOWN_TIMER <= 0:
-			_start_dash()
+			startDash()
 
 # Enables the dash
 # Applies constants, velocity & ghosts to dash
-func _start_dash() -> void:
+func startDash() -> void:
 	IS_DASHING = true
 	DASH_TIMER = DASH_DURATION
-	COOLDOWN_TIMER = DASH_COOLDOWN * DASH_COOLDOWN_REDUCTION_MULTI
-	velocity = VELOCITY.normalized() * DASH_SPEED * SPEED_MULTI
-	_create_ghosts()
+	COOLDOWN_TIMER = DASH_COOLDOWN * dash_cooldown_reduction_multi
+	velocity = VELOCITY.normalized() * DASH_SPEED * speed_multi
+	createGhosts()
 
 # Disables the dash using a timer
-func _dash(delta: float) -> void:
+func dash(delta: float) -> void:
 	if IS_DASHING:
 		DASH_TIMER -= delta
 		if DASH_TIMER <= 0:
@@ -66,7 +66,7 @@ func _dash(delta: float) -> void:
 		COOLDOWN_TIMER -= delta
 
 # Instantiates the dash-ghosts that fade out
-func _create_ghosts() -> void:
+func createGhosts() -> void:
 	for i in range(4):
 		await get_tree().create_timer(0.04).timeout
 		var instance = GHOST.instantiate()
@@ -84,7 +84,7 @@ func _create_ghosts() -> void:
 			get_parent().add_child(instance)
 
 # Handles animations for movement/dashing
-func _animation_handler() -> void:
+func animationHandler() -> void:
 	if IS_DASHING:
 		animation.speed_scale = 0.5
 		animation.play("dash_jump")
@@ -95,23 +95,26 @@ func _animation_handler() -> void:
 		else:
 			animation.play("walk")
 
+# Increments
 func on_trash_collected() -> void:
 	HP += 1
-	TRASH += 1 * TRASH_MULTI
+	TRASH += 1 * trash_multi
 	trash_display.text = str(roundi(TRASH))
-	HUD._add_to_health()
+	HUD.updateHealth()
 
+# Removes trash points based on what was purchased from the shop 
 func _remove(cost: Variant) -> void:
 	TRASH -= cost
 	trash_display.text = str(roundi(TRASH))
 
+# Returned signal with the chosen stat increase for the player
 func _update_multipliers(stat: String, percentage: float) -> void:
 	match(stat):
 		"Zoomies":
-			SPEED_MULTI += percentage
+			speed_multi += percentage
 		"Rizz":
 			get_child(2).scale += Vector2(percentage, percentage)
 		"Leg Day":
-			DASH_COOLDOWN_REDUCTION_MULTI *= percentage
+			dash_cooldown_reduction_multi *= percentage
 		"Bountiful":
-			TRASH_MULTI *= percentage
+			trash_multi *= percentage

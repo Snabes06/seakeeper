@@ -19,14 +19,14 @@ var rand3
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	randomize()
-	_randomize_shop()
+	randomizeShop()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	_open_shop()
+	openShop()
 
-func _randomize_shop() -> void:
+func randomizeShop() -> void:
 	rand1 = randi_range(0, upgrade.size() - 1)
 	var upgrade1 = upgrade[rand1]
 	up1.text = str(upgrade1["Name"]) + "\n" + "Price: " + str(roundi(upgrade1["Cost"] * upgrade_cost_multipliers[rand1])) + " trash\n" + upgrade1["Description"]
@@ -38,7 +38,7 @@ func _randomize_shop() -> void:
 	up3.text = str(upgrade3["Name"]) + "\n" + "Price: " + str(roundi(upgrade3["Cost"] * upgrade_cost_multipliers[rand3])) + " trash\n" + upgrade3["Description"]
 
 ## Opens the shop when pressing the keybind
-func _open_shop() -> void:
+func openShop() -> void:
 	if Input.is_action_just_pressed("open_shop"):
 		if visible == false:
 			visible = true
@@ -49,4 +49,4 @@ func _open_shop() -> void:
 
 
 func _on_skip_pressed() -> void:
-	_randomize_shop()
+	randomizeShop()

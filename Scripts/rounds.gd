@@ -12,13 +12,13 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if round_number >= round_count:
-		_endless_mode(delta)
+		endlessMode(delta)
 	else:
-		_normal_rounds(delta)
+		normalRounds(delta)
 
-func _normal_rounds(delta: float) -> void:
+func normalRounds(delta: float) -> void:
 	if self_modulate.a > 0.0:
-		_remove_roundchange(delta)
+		removeRoundChange(delta)
 	timer -= delta
 	$RoundTimer.text = str(snappedf(timer, 0.01))
 	if timer <= 0.0:
@@ -28,9 +28,9 @@ func _normal_rounds(delta: float) -> void:
 		text = "Round " + str(round_number)
 		timer = time
 
-func _endless_mode(delta: float) -> void:
+func endlessMode(delta: float) -> void:
 	if self_modulate.a > 0.0:
-		_remove_roundchange(delta)
+		removeRoundChange(delta)
 	timer -= delta
 	$RoundTimer.text = str(snappedf(timer, 0.01))
 	if timer <= 0.0:
@@ -40,5 +40,5 @@ func _endless_mode(delta: float) -> void:
 		text = "Endless Round " + str(round_number - round_count)
 		timer = endless_time
 
-func _remove_roundchange(delta: float) -> void:
+func removeRoundChange(delta: float) -> void:
 	self_modulate.a -= delta/2

@@ -4,10 +4,10 @@
 [ext_resource type="FontFile" uid="uid://doy0vj2q67a4" path="res://Resources/retro-pixel-thick.otf" id="2_gj7im"]
 [ext_resource type="Texture2D" uid="uid://bh4f88olrqwb5" path="res://Resources/forest_/forest_.png" id="3_eaat0"]
 [ext_resource type="Texture2D" uid="uid://c8ofd60y2x7uk" path="res://Resources/ProgressColor.jpg" id="4_u75k8"]
-[ext_resource type="Script" uid="uid://06tvkthqln85" path="res://Scenes/game_over.gd" id="5_43w4t"]
+[ext_resource type="Script" uid="uid://06tvkthqln85" path="res://Scripts/game_over.gd" id="5_43w4t"]
 [ext_resource type="Script" uid="uid://t5mi6mgb6m57" path="res://Scripts/shop.gd" id="5_hkhr5"]
 [ext_resource type="Texture2D" uid="uid://0w3e25wpiwg4" path="res://Resources/OverlifeColor.png" id="6_36knk"]
-[ext_resource type="Script" uid="uid://biopryr451mj7" path="res://Scenes/rounds.gd" id="7_8jye8"]
+[ext_resource type="Script" uid="uid://biopryr451mj7" path="res://Scripts/rounds.gd" id="7_8jye8"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_f43u2"]
 atlas = ExtResource("3_eaat0")

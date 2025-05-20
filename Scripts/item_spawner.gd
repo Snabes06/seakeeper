@@ -11,15 +11,15 @@ extends Node2D
 func _ready():
 	randomize()
 
-func spawn_item():
+func spawnItem():
 	if trash_container.get_child_count() >= max_trash:
 		spawn_timer.stop()
 		return
 	var instance = trash_scene.instantiate()  # Instance a piece of trash.
-	instance.global_position = get_random_screen_position()  # Position randomly on the screen.
+	instance.global_position = getRandomScreenPosition()  # Position randomly on the screen.
 	trash_container.add_child(instance) # Adds the node to the scene tree.
 
-func get_random_screen_position() -> Vector2:
+func getRandomScreenPosition() -> Vector2:
 	var x = randf_range(-370, 370) # selects a random x cordinate on screen.
 	var y = randf_range(-250, 250) # selects a random y cordinate on screen.
 	return Vector2(x, y) # returns both x and y as a coordinate/vector.
